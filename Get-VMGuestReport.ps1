@@ -42,7 +42,8 @@ Function Get-VMGuestReport
 					@{N="Active RAM"; E={$_.Summary.QuickStats.GuestMemoryUsage}}, `
 					@{N="Ballooned RAM"; E={$_.Summary.QuickStats.BalloonedMemory}}, `
 					@{N="Total RAM"; E={$_.Config.Hardware.MemoryMB}}, `
-					@{N="IP"; E={$_.Guest.IpAddress}}, `
+					@{N="IP Address"; E={$_.Guest.IpAddress}}, `
+					@{N="Hardware Version"; E={$_.Config.Version}}, `
 					@{N="Tools Version"; E={$_.Guest.ToolsVersion}}, `
 					@{N="Tools Version Status"; E={$_.Guest.ToolsVersionStatus2}}, ` # use ToolsVersionStatus2, ToolsVersionStatus was deprecated
 					@{N="Tools Running Status"; E={$_.Guest.ToolsRunningStatus}}, `
@@ -50,6 +51,9 @@ Function Get-VMGuestReport
 					@{N="HA Protected"; E={$_.Runtime.DasVmProtection.DasProtected}}, `
 					@{N="Snapshot Name"; E={$_.Snapshot.RootSnapshotList.Name}}, `
 					@{N="Snapshot Create Time"; E={$_.Snapshot.RootSnapshotList.CreateTime}}
+					@{N="Datastore"; E={$_.Config.Datastoreurl.Name}}
+					#@{N=""; E={$_.}}, `
+					#@{N=""; E={$_.}}, `
 					#@{N=""; E={$_.}}, `
 					#@{N=""; E={$_.}}, `
 

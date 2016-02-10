@@ -2,6 +2,9 @@
 # Get-VMGuestReport.ps1
 #
 
+# This function accepts vCenter server and VMGuest names
+# It will connect to all vCenter instances and query the VMGUest by name
+# The info from each VM will be captured and stored in a report
 Function Get-VMGuestReport
 {
 	[CmdletBinding()]
@@ -9,7 +12,9 @@ Function Get-VMGuestReport
 		[string[]]$vCenter,
 		[string[]]$VMGuest
 	)
-
+	
+	# Add VimAutomation.Core and Set-PowerCLIConfiguration
+	# Connect to $vCenter
 	Begin
 	{
 		Write-Verbose "Adding VMware.VimAutomation.Core snapin and setting powercli configuration"
@@ -20,6 +25,7 @@ Function Get-VMGuestReport
 		$Report = @()
 	}
 
+	# Query vCenter for VMGuest and gather data
 	Process
 	{
 		write-verbose "Processing stuff"
@@ -30,7 +36,7 @@ Function Get-VMGuestReport
 				Write-Verbose "Attemping to locate $VM"
 				$Guest = Get-View -ViewType VirtualMachine -Filter @{Name = "$VM"} | Select-Object Name, `
 					@{N="PowerState"; E={$_.Runtime.PowerState}}, `
-					@{N="OS"; E={$_.Config.GuestFullName}}, `
+					@{N="Operating System"; E={$_.Config.GuestFullName}}, `
 					@{N="CPU Sockets"; E={$_.Config.Hardware.NumCpu}}, `
 					@{N="CPU Cores"; E={$_.Config.Hardware.NumCoresPerSocket}}, `
 					@{N="Active RAM"; E={$_.Summary.QuickStats.GuestMemoryUsage}}, `
@@ -56,6 +62,8 @@ Function Get-VMGuestReport
 		}
 	}
 	
+	# Export report as CSV
+	# Write output to console
 	End
 	{
 		$Date = (Get-Date -Format yyyy-MM-dd.HHmm).toString()
